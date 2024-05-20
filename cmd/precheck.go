@@ -1,12 +1,13 @@
 /*
 Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
 import (
 	"fmt"
+	"os/exec"
 
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 )
 
@@ -21,8 +22,20 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("precheck called")
+		fmt.Println("Checking pinup prerequisites")
+		checkForDocker()
 	},
+}
+
+func checkForDocker() {
+	path, err := exec.LookPath("docker")
+	fmt.Print("Check for Docker: ")
+	if err != nil {
+		fmt.Print(color.RedString("failed") + "\n")
+		return
+	}
+	fmt.Print(color.GreenString("passed") + "\n")
+	fmt.Print(" (path: " + path + ")\n")
 }
 
 func init() {
